@@ -1,0 +1,106 @@
+<html>
+<head>
+    <title>Login – Book Nest</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { 
+            background: url('https://images.unsplash.com/photo-1512820790803-83ca734da794') no-repeat center center/cover; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            backdrop-filter: blur(5px);
+        }
+        .container { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 10px; 
+            box-shadow: white; 
+            text-align: center; 
+            width: 300px; 
+        }
+        h2 { margin-bottom: 20px; color: #e91e63; }
+        .input-group { margin-bottom: 15px; text-align: left; }
+        .input-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .input-group input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px; }
+        .btn { background-color: #e91e63; color: white; border: none; padding: 10px 15px; cursor: pointer; width: 100%; border-radius: 5px; }
+        .btn:hover { background-color: #c2185b; }
+        .toggle-link { margin-top: 10px; display: block; font-size: 14px; cursor: pointer; color: #e91e63; }
+        .error { color: red; font-size: 14px; margin-top: 10px; display: none; }
+    </style>
+</head>
+<body>
+    <div class="container" id="login-container">
+        <h2>Login to Book Nest</h2>
+        <form onsubmit="return loginUser()">
+            <div class="input-group">
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" required>
+            </div>
+            <div class="input-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" required>
+            </div>
+            <button type="submit" class="btn">Login</button>
+            <p class="error" id="login-error">Invalid email or password!</p>
+        </form>
+        <p class="toggle-link" onclick="toggleForm()">Don't have an account? Sign up</p>
+    </div>
+
+    <div class="container" id="signup-container" style="display: none;">
+        <h2>Sign Up</h2>
+        <form onsubmit="return signUpUser()">
+            <div class="input-group">
+                <label for="signup-email">Email</label>
+                <input type="email" id="signup-email" required>
+            </div>
+            <div class="input-group">
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" required>
+            </div>
+            <button type="submit" class="btn">Sign Up</button>
+            <p class="error" id="signup-error">Email already registered!</p>
+        </form>
+        <p class="toggle-link" onclick="toggleForm()">Already have an account? Login</p>
+    </div>
+
+    <script>
+        function toggleForm() {
+            document.getElementById("login-container").style.display =
+                document.getElementById("login-container").style.display === "none" ? "block" : "none";
+            document.getElementById("signup-container").style.display =
+                document.getElementById("signup-container").style.display === "none" ? "block" : "none";
+        }
+
+        function signUpUser() {
+            let email = document.getElementById("signup-email").value;
+            let password = document.getElementById("signup-password").value;
+            let errorMsg = document.getElementById("signup-error");
+            
+            if (localStorage.getItem(email)) {
+                errorMsg.style.display = "block";
+                return false;
+            }
+            
+            localStorage.setItem(email, password);
+            alert("Sign up successful! You can now log in.");
+            toggleForm();
+            return false;
+        }
+
+        function loginUser() {
+            let email = document.getElementById("login-email").value;
+            let password = document.getElementById("login-password").value;
+            let errorMsg = document.getElementById("login-error");
+            
+            if (localStorage.getItem(email) === password) {
+                window.location.href = "index.html";
+                return false;
+            } else {
+                errorMsg.style.display = "block";
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>
